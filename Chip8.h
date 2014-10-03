@@ -60,4 +60,9 @@ class Display {
 		Emulator     *emulator;
 };
 
+class Sound {
+	// TODO: Impliment this
+	;
+};
+
 #endif

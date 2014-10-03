@@ -8,7 +8,6 @@ int main( int argc, char *argv[] ){
 		std::cout << "Opening rom file " << argv[1] << std::endl;
 
 		emu = new Emulator( argv[1] );
-		std::cout << emu << std::endl;
 
 		delete emu;
 
