@@ -3,9 +3,20 @@
 #include <stdint.h>
 #include <SDL2/SDL.h>
 
+enum constants { 
+	PIXEL_WIDTH     = 16,
+	PIXEL_HEIGHT    = 16,
+	PIXELS_WINDOW_X = 64,
+	PIXELS_WINDOW_Y = 32,
+
+	WINDOW_HEIGHT = PIXEL_HEIGHT * PIXELS_WINDOW_Y,
+	WINDOW_WIDTH  = PIXEL_WIDTH  * PIXELS_WINDOW_X,
+};
+
 class Chip8;
 class Display;
 class Sound;
+class Keypad;
 class Emulator;
 
 class Emulator {
@@ -21,8 +32,13 @@ class Emulator {
 
 		Chip8   *cpu;
 		Display *display;
+		Keypad  *keypad;
+
+		SDL_Window   *window;
+		SDL_Renderer *renderer;
 
 	private:
+		void init_interface( );
 		bool running; 
 };
 
@@ -50,14 +66,31 @@ class Display {
 		~Display( );
 
 		void setPixel( unsigned x, unsigned y );
+		bool getPixel( unsigned x, unsigned y );
+		void unsetPixel( unsigned x, unsigned y );
+		void flipPixel( unsigned x, unsigned y );
+
 		void redraw( );
 
 	private:
-		bool         *buffer;
-		SDL_Window   *window;
-		SDL_Renderer *renderer;
-
+		bool         buffer[64][32];
 		Emulator     *emulator;
+};
+
+class Keypad {
+	public:
+		 Keypad( Emulator *em );
+		~Keypad( );
+
+		void checkKeys( );
+		bool isSet( unsigned keyno );
+		bool quitIsSet( );
+
+	private:
+		bool keys[16];
+		bool quit;
+
+		Emulator *emulator;
 };
 
 class Sound {
